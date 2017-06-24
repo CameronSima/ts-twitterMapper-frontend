@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ConsoleData from './components/console/ConsoleData.js'
+import ConsoleData from './components/console/ConsoleData.js';
+import MapData from './components/map/MapData.js';
 
 class App extends Component {
   render() {
@@ -13,7 +14,8 @@ class App extends Component {
         </div>
         <p className="App-intro"></p>
 
-          <ConsoleData /> 
+          {/*<ConsoleData /> */}
+          <MapData />
       </div>
     );
   }
