@@ -1,4 +1,4 @@
-/* global window,document */
+
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import Modal from 'react-modal';
