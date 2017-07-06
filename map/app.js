@@ -7,7 +7,7 @@ import DeckGLOverlay from './deckgl-overlay.js';
 
 import * as helpers from './utils/helpers.js';
 
-const MAPBOX_TOKEN = "pk.eyJ1IjoiY2FtZXJvbnNpbWEiLCJhIjoiY2ozZzV1N283MDAxazJxcDJvZnl2YTV1NiJ9.j6msOib7rYWBJ_c65xtXpg"; 
+const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN; 
 
 // Modal settings
 const customStyles = {
@@ -64,8 +64,6 @@ export default class Root extends Component {
   closeModal() {
     this.setState({ modalIsOpen: false });
   }
-
-
 
   componentDidMount() {
     window.addEventListener('resize', this._resize.bind(this));
