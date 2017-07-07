@@ -1,6 +1,6 @@
 /* global window */
 import React, {Component} from 'react';
-import DeckGL, {HexagonLayer} from 'deck.gl';
+import DeckGL from 'deck.gl';
 import { CustomHexLayer } from './customHexLayer.js';
 
 const LIGHT_SETTINGS = {
@@ -44,7 +44,7 @@ export default class DeckGLOverlay extends Component {
       minZoom: 3,
       maxZoom: 15,
       pitch: 30,
-      bearing: -27.396674584323023
+      bearing: 0
     };
   }
 

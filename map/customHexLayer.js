@@ -19,3 +19,5 @@ export class CustomHexLayer extends HexagonLayer {
     });
   }
 }
+
+CustomHexLayer.layerName = 'CustomHexLayer';
