@@ -6,7 +6,8 @@ export let getTopHastags = (tweets, n) => {
 
     tweets.forEach((tweet) => {
         tweet.hashtags.forEach((hashtag) => {
-            temp[hashtag.text] = temp[hashtag.text] ? temp[hashtag.text] +1 : 1;
+            hashtag = hashtag.text.toLowerCase()
+            temp[hashtag] = temp[hashtag] ? temp[hashtag] +1 : 1;
         });
     })
 
@@ -33,5 +34,18 @@ export let getTweetsFromHexagon = (data, info) => {
         return tweet.latLng.lng == info.object.points[0]['0'] &&
                tweet.latLng.lat == info.object.points[0]['1']
     })
+}
+
+export let getSentimentScore = (data) => {
+
+    // tweets with a valid compounded sentiment score
+    let scored = data.filter((tweet) => {
+        return tweet.sentimentData.compound != 0;
+    })
+    let totalScore = scored.reduce((acc, val) => {
+        return acc + val.sentimentData.compound;
+    }, 0)
+
+    return (totalScore / scored.length);
 }
 

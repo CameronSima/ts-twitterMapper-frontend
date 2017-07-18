@@ -4,6 +4,8 @@ import {render} from 'react-dom';
 import Modal from 'react-modal';
 import MapGL from 'react-map-gl';
 import DeckGLOverlay from './map/deckgl-overlay.js';
+import ReactTooltip from 'react-tooltip';
+import InfoWindow from './infoWindow.js';
 
 import * as helpers from './utils/helpers.js';
 
@@ -14,7 +16,7 @@ const customStyles = {
     left                  : '50%',
     right                 : 'auto',
     bottom                : 'auto',
-    marginRight           : '-50%',
+    marginRight           : '50%',
     transform             : 'translate(-50%, -50%)'
   }
 };
@@ -24,6 +26,11 @@ export default class Root extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      cityData: {
+        hashtags: [],
+        sentimentScore: 0,
+        tweets: []
+      },
       viewport: {
         ...DeckGLOverlay.defaultViewport,
         width: 500,
@@ -49,6 +56,10 @@ export default class Root extends Component {
         .then(response => response.json())
         .then((data) => {
           this.setState({ dataFull: data });
+          return data
+        })
+        .then((data) => {
+          console.log(helpers.getTopHastags(data, 20));
           return data
         })
         .then((data) =>{
@@ -93,14 +104,18 @@ export default class Root extends Component {
     //console.log(info)
   }
   _onClick(info) {
-  
+
     let tweets = helpers.getTweetsFromHexagon(this.state.dataFull, info);
-    tweets.forEach((tweet) => {
-      console.log(helpers.generateColorCodes(tweet.sentimentData))
-    })
+    let cityData = {
+      hashtags: helpers.getTopHastags(tweets, 10),
+      tweets: tweets,
+      sentimentScore: helpers.getSentimentScore(tweets)
+    }
 
-    this.openModal();
-
+    this.setState({ cityData: cityData })
+    // let t = this.state.dataFull.filter((tweet) => {
+    //   return tweet.text.toLowerCase().indexOf("donald trump") !== -1;
+    // })
   }
 
   render() {
@@ -110,6 +125,9 @@ export default class Root extends Component {
 
       return (
         <div>
+          <InfoWindow hashtags={this.state.cityData.hashtags}
+                      tweets={this.state.cityData.tweets}
+                      sentimentScore={this.state.cityData.sentimentScore}/>
           <MapGL
             {...viewport}
             mapStyle="mapbox://styles/mapbox/dark-v9"
@@ -121,10 +139,6 @@ export default class Root extends Component {
               data={data || []}
             />
           </MapGL>
-          <Modal
-            style={customStyles}
-            isOpen={ this.state.modalIsOpen }
-            onRequestClose={ this.closeModal } />
         </div>
       );
     } else {
